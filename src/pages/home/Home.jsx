@@ -6,6 +6,7 @@ import Slide from "../../components/slide/Slide";
 import { cards } from "../../data";
 import CatCard from "../../components/categorycard/CatCard";
 import Pledge from "../../components/pledge/Pledge";
+import Explore from "../../components/explore/Explore";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
         ))}
       </Slide>
       <Pledge />
+      <Explore />
     </>
   );
 };
