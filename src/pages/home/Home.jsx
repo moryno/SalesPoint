@@ -5,6 +5,7 @@ import Trusted from "../../components/trusted/Trusted";
 import Slide from "../../components/slide/Slide";
 import { cards } from "../../data";
 import CatCard from "../../components/categorycard/CatCard";
+import Pledge from "../../components/pledge/Pledge";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
           <CatCard key={card?.id} item={card} />
         ))}
       </Slide>
+      <Pledge />
     </>
   );
 };
