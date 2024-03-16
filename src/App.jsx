@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import Footer from "./components/footer/Footer";
 import Products from "./pages/products/Products";
 import "./app.scss";
+import Product from "./pages/product/Product";
 
 function App() {
   const Layout = () => {
@@ -28,6 +29,10 @@ function App() {
         {
           path: "/products",
           element: <Products />,
+        },
+        {
+          path: "/products/:id",
+          element: <Product />,
         },
       ],
     },
