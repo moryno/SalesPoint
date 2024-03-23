@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import appRoute from "./src/routes/auth.route.js";
 
 const app = express();
 dotenv.config();
@@ -13,6 +15,11 @@ const connect = async () => {
     console.log(error);
   }
 };
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use("/api/auth", appRoute);
 
 app.listen(process.env.PORT || 8800, () => {
   connect();
