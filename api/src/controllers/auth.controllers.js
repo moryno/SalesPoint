@@ -1,8 +1,9 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import responseError from "../utils/responseError.js";
 
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const hashPassword = bcrypt.hashSync(req.body.password, 10);
     const newUser = new User({
@@ -11,19 +12,20 @@ export const register = async (req, res) => {
     });
 
     const user = await newUser.save();
-    res.status(201).send(`User ${user.fullName} sucessfully.`);
+    res.status(201).send(`Created user ${user.fullName} sucessfully.`);
   } catch (error) {
-    res.status(500).send("Creating user failed.");
+    return next(error);
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    if (!user) return res.status(404).send("User not found!");
+    if (!user) return next(responseError(404, "User not found!"));
 
     const isPassword = bcrypt.compareSync(req.body.password, user.password);
-    if (!isPassword) return res.status(400).send("Wrong username or password!");
+    if (!isPassword)
+      return next(responseError(400, "Wrong username or password!"));
 
     const token = jwt.sign(
       {
@@ -45,19 +47,17 @@ export const login = async (req, res) => {
     res.status(500).json(error);
   }
 };
-export const logout = async (req, res) => {
-  try {
-    const newUser = new User({
-      fullName: "Susan Kamau",
-      username: "susankamau",
-      email: "susankamau@gmail.com",
-      password: "123456",
-      country: "Kenya",
-    });
 
-    await newUser.save();
-    res.status(201).send("User created sucessfully.");
+export const logout = async (req, res, next) => {
+  try {
+    res
+      .clearCookie("accessToken", {
+        sameSite: "none",
+        secure: true,
+      })
+      .status(200)
+      .send("You have been logged out.");
   } catch (error) {
-    res.status(500).send("Creating user failed.");
+    next(error);
   }
 };
