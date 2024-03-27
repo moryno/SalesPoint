@@ -23,7 +23,7 @@ const productSchema = new Schema(
       type: Number,
       default: 0,
     },
-    Category: {
+    category: {
       type: String,
       required: false,
     },
@@ -62,7 +62,6 @@ const productSchema = new Schema(
     sales: {
       type: Number,
       default: 0,
-      required: false,
     },
   },
   {
