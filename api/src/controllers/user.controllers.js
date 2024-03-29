@@ -14,3 +14,14 @@ export const deleteUser = async (req, res, next) => {
     return next(responseError(500, "Deleting account failed."));
   }
 };
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(responseError(404, "User not found!"));
+
+    res.status(200).send(user);
+  } catch (error) {
+    return next(error);
+  }
+};
