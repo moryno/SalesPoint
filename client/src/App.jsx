@@ -1,4 +1,9 @@
 import React from "react";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 import Navbar from "./components/navbar/Navbar";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Home from "./pages/home/Home";
@@ -9,13 +14,15 @@ import Product from "./pages/product/Product";
 import Chat from "./pages/chat/Chat";
 
 function App() {
+  const queryClient = new QueryClient();
+
   const Layout = () => {
     return (
-      <>
+      <QueryClientProvider client={queryClient}>
         <Navbar />
         <Outlet />
         <Footer />
-      </>
+      </QueryClientProvider>
     );
   };
   const router = createBrowserRouter([
