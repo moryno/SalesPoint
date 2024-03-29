@@ -37,6 +37,36 @@ export const deleteProduct = async (req, res, next) => {
     next(error);
   }
 };
+export const editProduct = async (req, res, next) => {
+  if (!req.isSeller)
+    return next(
+      responseError(403, "You need a seller account to edit this product!")
+    );
+
+  try {
+    const product = await Product.findById(req.params.id);
+    const editedProduct = {
+      ...req.body,
+      userId: req.userId,
+    };
+
+    if (product) {
+      if (product.userId !== req.userId)
+        return next(responseError(403, "You can only edit your product"));
+
+      const prod = await Product.findByIdAndUpdate(
+        req.params.id,
+        editedProduct,
+        { new: true }
+      );
+      res.status(200).send(prod);
+    } else {
+      return next(responseError(404, "Product not found!"));
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const getProduct = async (req, res, next) => {
   try {

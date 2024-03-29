@@ -3,6 +3,7 @@ import { verifyToken } from "../middleware/jwt.js";
 import {
   createProduct,
   deleteProduct,
+  editProduct,
   getProduct,
   getProducts,
 } from "../controllers/product.controllers.js";
@@ -12,5 +13,5 @@ router.post("/", verifyToken, createProduct);
 router.delete("/:id", verifyToken, deleteProduct);
 router.get("/", getProducts);
 router.get("/:id", getProduct);
-router.put("/:id", verifyToken, createProduct);
+router.put("/:id", verifyToken, editProduct);
 export default router;
