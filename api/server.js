@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 import authRoute from "./src/routes/auth.route.js";
 import userRoute from "./src/routes/user.route.js";
 import productRoute from "./src/routes/product.route.js";
+import reviewRoute from "./src/routes/review.route.js";
+import orderRoute from "./src/routes/order.route.js";
 
 const app = express();
 dotenv.config();
@@ -24,6 +26,8 @@ app.use(cookieParser());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
+app.use("/api/reviews", reviewRoute);
+app.use("/api/orders", orderRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;

@@ -43,12 +43,13 @@ export const editProduct = async (req, res, next) => {
       responseError(403, "You need a seller account to edit this product!")
     );
 
+  const editedProduct = {
+    ...req.body,
+    userId: req.userId,
+  };
+
   try {
     const product = await Product.findById(req.params.id);
-    const editedProduct = {
-      ...req.body,
-      userId: req.userId,
-    };
 
     if (product) {
       if (product.userId !== req.userId)
