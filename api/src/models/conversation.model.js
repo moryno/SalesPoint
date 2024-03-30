@@ -8,7 +8,7 @@ const conversationSchema = new Schema(
       required: true,
       unique: true,
     },
-    redBySeller: {
+    readBySeller: {
       type: Boolean,
       required: true,
     },

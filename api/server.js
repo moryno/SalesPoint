@@ -7,6 +7,7 @@ import userRoute from "./src/routes/user.route.js";
 import productRoute from "./src/routes/product.route.js";
 import reviewRoute from "./src/routes/review.route.js";
 import orderRoute from "./src/routes/order.route.js";
+import conversationRoute from "./src/routes/conversation.route.js";
 
 const app = express();
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/orders", orderRoute);
+app.use("/api/conversations", conversationRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
