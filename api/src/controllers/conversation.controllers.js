@@ -1,4 +1,5 @@
 import Conversation from "../models/conversation.model.js";
+import responseError from "../utils/responseError.js";
 
 export const createConversation = async (req, res, next) => {
   const newConverstaion = new Conversation({
@@ -21,7 +22,7 @@ export const getConversations = async (req, res, next) => {
   try {
     const conversations = await Conversation.find(
       req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
-    );
+    ).sort({ updatedAt: -1 });
 
     if (conversations?.length === 0)
       return next(responseError(404, "Conversations not found!"));

@@ -8,6 +8,7 @@ import productRoute from "./src/routes/product.route.js";
 import reviewRoute from "./src/routes/review.route.js";
 import orderRoute from "./src/routes/order.route.js";
 import conversationRoute from "./src/routes/conversation.route.js";
+import chatRoute from "./src/routes/chat.route.js";
 
 const app = express();
 dotenv.config();
@@ -30,12 +31,13 @@ app.use("/api/products", productRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/conversations", conversationRoute);
+app.use("/api/chats", chatRoute);
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
-  const errorMessage = err.message || "Something went wrong!";
+  const errorchate = err.chate || "Something went wrong!";
 
-  return res.status(errorStatus).send(errorMessage);
+  return res.status(errorStatus).send(errorchate);
 });
 
 app.listen(process.env.PORT || 8800, () => {
