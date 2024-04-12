@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoute from "./src/routes/auth.route.js";
 import userRoute from "./src/routes/user.route.js";
@@ -24,6 +25,7 @@ const connect = async () => {
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
