@@ -9,7 +9,7 @@ import {
 import { generateRoutes } from "_helpers/routeHelper";
 import AppAnimatePage from "_lib/AppAnimatePage";
 import AppSuspense from "_lib/AppSuspense";
-import { useAuthUser } from "_hooks/useAuthUser";
+import { useAuthUser } from "_hooks";
 
 const AppLayout = () => {
   const { isAuthenticated, user } = useAuthUser();

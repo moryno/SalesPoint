@@ -1,6 +1,4 @@
 import { LOGIN_API, successResponseContent } from "_constants";
-import { getAccessToken } from "_helpers";
-import { replaceExternalText } from "_helpers";
 import axios from "axios";
 import { notify } from "_helpers";
 
@@ -41,7 +39,6 @@ const handleErrorResponse = (error) => {
       error?.message ||
       "";
     const userNotFound = status === 404 && url === LOGIN_API;
-
     if (status === 401) {
       // store.dispatch({ type: LOGOUT });
       description = "Session has expired. Please log in again";
@@ -49,7 +46,7 @@ const handleErrorResponse = (error) => {
     if (!userNotFound) {
       notify({
         message: "Error",
-        description: replaceExternalText(description),
+        description: description,
         placement: "topRight",
         error: true,
       });

@@ -95,7 +95,7 @@ export const getProducts = async (req, res, next) => {
     ...(query.search && { title: { $regex: query.search, $options: "i" } }),
   };
   try {
-    const products = await Product.find(filters);
+    const products = await Product.find(filters).sort({ [query.sort]: -1 });
 
     if (!products) return next(responseError(404, "Products not found!"));
 

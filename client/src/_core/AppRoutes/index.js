@@ -4,11 +4,12 @@ import { authRoutes } from "./AuthRoute";
 import { homeRoutes } from "./HomeRoute";
 import { chatRoutes } from "./ChatRoutes";
 import { productRoutes } from "./ProductRoute";
+import { orderRoutes } from "./OrderRoute";
 import { HOME_ROUTE, LOGIN_ROUTE } from "_constants";
 
 const authorizedStructure = {
   fallbackPath: LOGIN_ROUTE,
-  routes: [...chatRoutes],
+  routes: [...chatRoutes, ...orderRoutes],
 };
 
 const unAuthorizedStructure = {

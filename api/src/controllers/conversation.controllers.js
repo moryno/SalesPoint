@@ -24,9 +24,6 @@ export const getConversations = async (req, res, next) => {
       req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
     ).sort({ updatedAt: -1 });
 
-    if (conversations?.length === 0)
-      return next(responseError(404, "Conversations not found!"));
-
     res.status(200).send(conversations);
   } catch (error) {
     next(error);
@@ -48,7 +45,7 @@ export const getConversation = async (req, res, next) => {
 
 export const updateConversation = async (req, res, next) => {
   try {
-    const updatedConversation = await Conversation.findByIdAndUpdate(
+    const updatedConversation = await Conversation.findOneAndUpdate(
       { id: req.params.id },
       {
         $set: {

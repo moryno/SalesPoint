@@ -1,32 +1,35 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
-import newRequest from "../../utils/newRequest";
-import Review from "../review/Review";
+import React, { useState } from "react";
 import "./Reviews.scss";
-const Reviews = ({ gigId }) => {
-  const queryClient = useQueryClient();
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["reviews"],
-    queryFn: () =>
-      newRequest.get(`/reviews/${gigId}`).then((res) => {
-        return res.data;
-      }),
-  });
+import { useCreateService, useGetById } from "_hooks";
+import { AffiliateQueryEnums } from "_constants";
+import { reviewService } from "_services";
+import Review from "components/review/Review";
+const Reviews = ({ productId }) => {
+  const [review, setReview] = useState(null);
+  const { getReviews, createReview } = reviewService;
+  const mutation = useCreateService(
+    createReview,
+    `${AffiliateQueryEnums.REVIEWS}.${productId}`
+  );
 
-  const mutation = useMutation({
-    mutationFn: (review) => {
-      return newRequest.post("/reviews", review);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["reviews"]);
-    },
-  });
+  const { isLoading, error, data } = useGetById(
+    getReviews,
+    AffiliateQueryEnums.REVIEWS,
+    productId
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const desc = e.target[0].value;
-    const star = e.target[1].value;
-    mutation.mutate({ gigId, desc, star });
+    mutation.mutateAsync({ productId, ...review });
+    // setReview(null);
+  };
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setReview((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -36,12 +39,19 @@ const Reviews = ({ gigId }) => {
         ? "loading"
         : error
         ? "Something went wrong!"
-        : data.map((review) => <Review key={review._id} review={review} />)}
+        : data?.data?.map((review) => (
+            <Review key={review._id} review={review} />
+          ))}
       <div className="add">
         <h3>Add a review</h3>
         <form action="" className="addForm" onSubmit={handleSubmit}>
-          <input type="text" placeholder="write your opinion" />
-          <select name="" id="">
+          <input
+            type="text"
+            name="description"
+            onChange={onChange}
+            placeholder="write your opinion"
+          />
+          <select name="star" id="star" onChange={onChange}>
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>

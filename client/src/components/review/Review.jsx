@@ -1,15 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import newRequest from "../../utils/newRequest";
 import "./Review.scss";
+import { useGetById } from "_hooks";
+import { AffiliateQueryEnums } from "_constants";
+import { userService } from "_services";
 const Review = ({ review }) => {
-  const { isLoading, error, data } = useQuery({
-    queryKey: [review.userId],
-    queryFn: () =>
-      newRequest.get(`/users/${review.userId}`).then((res) => {
-        return res.data;
-      }),
-  });
+  const { getUser } = userService;
+
+  const { isLoading, error, data } = useGetById(
+    getUser,
+    AffiliateQueryEnums.USERS,
+    review?.userId
+  );
 
   return (
     <div className="review">
@@ -19,11 +21,15 @@ const Review = ({ review }) => {
         "error"
       ) : (
         <div className="user">
-          <img className="pp" src={data.img || "/img/noavatar.jpg"} alt="" />
+          <img
+            className="pp"
+            src={data?.data?.image || "/img/noavatar.jpg"}
+            alt=""
+          />
           <div className="info">
-            <span>{data.username}</span>
+            <span>{data?.data?.username}</span>
             <div className="country">
-              <span>{data.country}</span>
+              <span>{data?.data?.country}</span>
             </div>
           </div>
         </div>
@@ -36,7 +42,7 @@ const Review = ({ review }) => {
           ))}
         <span>{review.star}</span>
       </div>
-      <p>{review.desc}</p>
+      <p>{review.description}</p>
       <div className="helpful">
         <span>Helpful?</span>
         <img src="/img/like.png" alt="" />

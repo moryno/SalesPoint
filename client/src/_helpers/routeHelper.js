@@ -62,7 +62,6 @@ const routesGenerator = (
   const isAuthorized = type === "authorized";
   const isUnauthorized = type === "unauthorized";
   const isAlways = type === "always";
-  console.log(type);
 
   if (routeSet?.routes) {
     const routes = routeSet.routes;
@@ -99,6 +98,5 @@ const routesGenerator = (
       });
     }
   }
-  console.log(generatedRoutes);
   return generatedRoutes;
 };

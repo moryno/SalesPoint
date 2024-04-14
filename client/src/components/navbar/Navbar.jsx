@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Navbar.scss";
 import { Link, useLocation } from "react-router-dom";
+import { useAuthStore, useAuthUser } from "_hooks";
 
 const Navbar = () => {
   const [isActive, setIsActive] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { pathname } = useLocation();
+  const { user } = useAuthUser();
+  const { logOut } = useAuthStore();
 
   const onScroll = () => {
     window.scrollY > 0 ? setIsActive(true) : setIsActive(false);
@@ -19,12 +22,10 @@ const Navbar = () => {
     };
   }, []);
 
-  const currentUser = {
-    name: "Miriam Muthee",
-    isSeller: true,
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  const handleLogout = () => {
+    logOut();
   };
+
   return (
     <div className={isActive || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
@@ -38,16 +39,29 @@ const Navbar = () => {
           <span>SalesPoint Business</span>
           <span>Explore</span>
           <span>English</span>
-          <span>Sign in</span>
-          {!currentUser?.isSeller && <span>Become a Seller</span>}
-          {!currentUser && <button>Join</button>}
-          {currentUser && (
+
+          {!user?.isSeller && (
+            <Link className="link" to="/register">
+              Become a Seller
+            </Link>
+          )}
+          {!user && (
+            <>
+              <Link className="link" to="/login">
+                Sign in
+              </Link>
+              <Link className="link" to="/register">
+                Join
+              </Link>
+            </>
+          )}
+          {user && (
             <div onClick={() => setIsOpen((prev) => !prev)} className="user">
-              <img src={currentUser?.image} alt="profilePic" />
-              <span>{currentUser?.name}</span>
+              <img src={user?.image || "/img/noavatar.jpg"} alt="profilePic" />
+              <span>{user?.fullName}</span>
               {isOpen && (
                 <div className="options">
-                  {currentUser?.isSeller && (
+                  {user?.isSeller && (
                     <>
                       <Link className="link" to="/products">
                         Products
@@ -57,13 +71,13 @@ const Navbar = () => {
                       </Link>
                     </>
                   )}
-                  <Link className="link" to="/">
+                  <Link className="link" to="/orders">
                     Orders
                   </Link>
-                  <Link className="link" to="/">
+                  <Link className="link" to="/chats">
                     Chats
                   </Link>
-                  <span>SignOut</span>
+                  <span onClick={handleLogout}>SignOut</span>
                 </div>
               )}
             </div>
@@ -98,9 +112,7 @@ const Navbar = () => {
             <Link className="link" to="/">
               Business
             </Link>
-            <Link className="link" to="/">
-              Lifestyle
-            </Link>
+            <Link className="link">Lifestyle</Link>
           </div>
           <hr />
         </>

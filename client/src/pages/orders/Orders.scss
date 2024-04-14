@@ -1,6 +1,7 @@
-.chats {
+.orders {
     display: flex;
     justify-content: center;
+    color: #555;
   
     .container {
       width: 1400px;
@@ -10,6 +11,7 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
+
   
         button {
           background-color: #1dbf73;
@@ -25,31 +27,28 @@
         width: 100%;
   
         tr {
+          height: 50px;
           th {
             text-align: left;
           }
           td {
-            padding: 10px;
-  
-            &:first-child {
-              font-weight: 500;
-            }
             
-            &:nth-child(2),
-            &:nth-child(3) {
-              color: gray;
+            sup{
+              font-size: 12px;
+            }
+  
+            .image {
+              width: 50px;
+              height: 25px;
+              object-fit: cover;
+            }
+  
+            .message {
+              width: 25px;
+              cursor: pointer;
             }
           }
-  
-          button {
-            background-color: #1dbf73;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
-          }
-  
-          &.active {
+          &:nth-child(even) {
             background-color: #1dbf730f;
           }
         }

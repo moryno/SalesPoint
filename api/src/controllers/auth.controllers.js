@@ -21,11 +21,12 @@ export const register = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
-    if (!user) return next(responseError(404, "User not found!"));
+    if (!user)
+      return res.status(403).json({ error: "Wrong username or password!" });
 
     const isPassword = bcrypt.compareSync(req.body.password, user.password);
     if (!isPassword)
-      return next(responseError(400, "Wrong username or password!"));
+      return res.status(400).json({ error: "Wrong username or password!" });
 
     const token = jwt.sign(
       {

@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./Product.scss";
-import { gigs } from "../../data";
 import ProductCard from "../../components/productcard/ProductCard";
+import { useGetProducts } from "_hooks";
 
 const Products = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [sortType, setSortType] = useState("sales");
+  const { search } = useLocation();
+  const [sortType, setSortType] = useState("createdAt");
+  const minRef = useRef(null);
+  const maxRef = useRef(null);
+  const { isLoading, error, data, refetch } = useGetProducts(
+    search,
+    minRef.current?.value,
+    maxRef.current?.value,
+    sortType
+  );
   const onTypeChange = (type) => {
     setSortType(type);
     setIsOpen(false);
   };
 
+  const onApply = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
+  useEffect(() => {
+    refetch();
+  }, [refetch, sortType]);
+
   return (
     <div className="products">
       <div className="container">
-        <span className="breadcrumbs">SALESPOINT > GRAPHICS & DESIGN</span>
+        <span className="breadcrumbs">SALESPOINT {">"} GRAPHICS & DESIGN</span>
         <h1>AI Artists</h1>
         <p>
           Explore the boundary of art and technology with SalesPoint AI Artists
@@ -22,14 +40,14 @@ const Products = () => {
         <div className="menu">
           <div className="left">
             <span>Budged</span>
-            <input type="text" placeholder="min" />
-            <input type="text" placeholder="max" />
-            <button>Apply</button>
+            <input ref={minRef} type="number" placeholder="min" />
+            <input ref={maxRef} type="number" placeholder="max" />
+            <button onClick={onApply}>Apply</button>
           </div>
           <div className="right">
             <span className="sortBy">Sort By</span>
             <span className="sortType">
-              {sortType === "sales" ? "Best Selling" : "Newest"}
+              {sortType === "price" ? "Best Selling" : "Newest"}
             </span>
             <img
               onClick={() => setIsOpen((prev) => !prev)}
@@ -38,10 +56,10 @@ const Products = () => {
             />
             {isOpen && (
               <div className="rightMenu">
-                {sortType === "sales" ? (
+                {sortType === "price" ? (
                   <span onClick={() => onTypeChange("createdAt")}>Newest</span>
                 ) : (
-                  <span onClick={() => onTypeChange("sales")}>
+                  <span onClick={() => onTypeChange("price")}>
                     Best Selling
                   </span>
                 )}
@@ -50,9 +68,13 @@ const Products = () => {
           </div>
         </div>
         <div className="cards">
-          {gigs?.map((product) => (
-            <ProductCard key={product.id} item={product} />
-          ))}
+          {isLoading
+            ? "loading..."
+            : error
+            ? "Something went wrong"
+            : data?.data?.map((product) => (
+                <ProductCard key={product._id} item={product} />
+              ))}
         </div>
       </div>
     </div>

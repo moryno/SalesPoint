@@ -13,7 +13,9 @@ export const createReview = async (req, res, next) => {
   try {
     const ownProduct = await Product.findById(req.body.productId);
     if (ownProduct.userId === req.userId && req.isSeller)
-      return next(responseError(403, "You cannot review your product!"));
+      return res
+        .status(403)
+        .json({ message: "You cannot review your product!" });
     // TO DO
     // Check if userId is in Order
     const existingReview = await Review.findOne({
@@ -21,12 +23,9 @@ export const createReview = async (req, res, next) => {
       userId: req.userId,
     });
     if (existingReview)
-      return next(
-        responseError(
-          403,
-          "You have already created a review for this product!"
-        )
-      );
+      return res.status(403).json({
+        message: "You have already created a review for this product!",
+      });
 
     const review = await newReview.save();
 
@@ -58,12 +57,9 @@ export const deleteReview = async (req, res, next) => {
   }
 };
 
-export const getReviews = async (req, res, next) => {
+export const getReviews = async (req, res) => {
   try {
     const reviews = await Review.find({ productId: req.params.productId });
-
-    if (reviews.length === 0)
-      return next(responseError(404, "Reviews not found!"));
 
     res.status(200).send(reviews);
   } catch (error) {

@@ -1,28 +1,18 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import "./Login.scss";
-import { useNavigate } from "react-router-dom";
-import { Form, Input } from "antd";
-import { authService } from "_services";
+import { useAuthStore } from "_hooks";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const authStore = useAuthStore();
+  const { isFetching } = useSelector((store) => store.user);
 
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const res = await authService.login({ username, password });
-      // localStorage.setItem("currentUser", JSON.stringify(res.data));
-      // navigate("/");
-      console.log(res);
-    } catch (err) {
-      setError(err.response.data);
-    }
+    authStore.login({ username, password });
   };
-
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
@@ -41,8 +31,9 @@ function Login() {
           type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
-        {error && error}
+        <button disabled={isFetching} type="submit">
+          Login
+        </button>
       </form>
     </div>
   );

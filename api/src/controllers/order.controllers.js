@@ -1,6 +1,5 @@
 import Order from "../models/order.model.js";
 import Product from "../models/product.model.js";
-import responseError from "../utils/responseError.js";
 
 export const createOrder = async (req, res, next) => {
   try {
@@ -29,8 +28,7 @@ export const getOrders = async (req, res, next) => {
       ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
       isCompleted: true,
     });
-    if (orders?.length === 0)
-      return next(responseError(404, "Orders not found!"));
+
     res.status(200).send(orders);
   } catch (error) {
     next(error);

@@ -1,6 +1,7 @@
 // AUTH
 export const LOGIN_API = "/auth/login";
 export const REGISTER_API = "/auth/register";
+export const LOGOUT_API = "/auth/logout";
 
 // USERS
 export const USERS_API = "/users";
