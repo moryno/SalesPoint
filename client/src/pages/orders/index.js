@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table } from "antd";
 import "./Orders.scss";
-import { orderColumns } from "./columns";
+import { expandedOrderColumns, orderColumns } from "./columns";
 import { useAuthUser, useGetAll } from "_hooks";
 import { AffiliateQueryEnums, CHAT_ROUTE } from "_constants";
 import { conversationService, orderService } from "_services";
@@ -49,7 +49,17 @@ const Orders = () => {
               />
             ),
           };
+        } else {
+          return column;
         }
+      }),
+    ],
+    [handleContact]
+  );
+
+  const expandedColumns = useMemo(
+    () => [
+      ...expandedOrderColumns.map((column) => {
         if (column.dataIndex === "image") {
           return {
             ...column,
@@ -62,7 +72,7 @@ const Orders = () => {
         }
       }),
     ],
-    [handleContact]
+    []
   );
 
   return (
@@ -76,8 +86,19 @@ const Orders = () => {
           dataSource={data?.data}
           columns={columns}
           rowKey={(record) => record?._id}
+          expandable={{
+            rowExpandable: (record) => true,
+            expandedRowRender: (record) => {
+              return (
+                <Table
+                  dataSource={record.products}
+                  columns={expandedColumns}
+                  rowKey={(record) => record?.productId}
+                />
+              );
+            },
+          }}
         />
-        ;
       </div>
     </div>
   );

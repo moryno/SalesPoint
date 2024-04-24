@@ -3,24 +3,37 @@ const { Schema } = mongoose;
 
 const orderSchema = new Schema(
   {
-    image: {
-      type: String,
-      required: false,
-    },
-    productId: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
+    products: [
+      {
+        productId: {
+          type: String,
+          require: true,
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+        image: {
+          type: String,
+          required: false,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        title: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
+
     sellerId: {
       type: String,
+      required: true,
+    },
+    amount: {
+      type: Number,
       required: true,
     },
     buyerId: {

@@ -35,6 +35,7 @@ export const createReview = async (req, res, next) => {
 
     res.status(201).json(review);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -57,7 +58,7 @@ export const deleteReview = async (req, res, next) => {
   }
 };
 
-export const getReviews = async (req, res) => {
+export const getReviews = async (req, res, next) => {
   try {
     const reviews = await Review.find({ productId: req.params.productId });
 

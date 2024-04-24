@@ -5,11 +5,14 @@ import { homeRoutes } from "./HomeRoute";
 import { chatRoutes } from "./ChatRoutes";
 import { productRoutes } from "./ProductRoute";
 import { orderRoutes } from "./OrderRoute";
+import { cartRoutes } from "./CartRoute";
 import { HOME_ROUTE, LOGIN_ROUTE } from "_constants";
+import { paymentRoutes } from "./PaymentRoute";
+import { myProductRoutes } from "./MyProductRoute";
 
 const authorizedStructure = {
   fallbackPath: LOGIN_ROUTE,
-  routes: [...chatRoutes, ...orderRoutes],
+  routes: [...chatRoutes, ...orderRoutes, ...paymentRoutes, ...myProductRoutes],
 };
 
 const unAuthorizedStructure = {
@@ -26,7 +29,7 @@ const anonymousStructure = {
 };
 
 const alwaysStructure = {
-  routes: [...homeRoutes, ...productRoutes],
+  routes: [...homeRoutes, ...productRoutes, ...cartRoutes],
 };
 
 export {

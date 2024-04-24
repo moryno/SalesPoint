@@ -1,4 +1,5 @@
 import Conversation from "../models/conversation.model.js";
+import User from "../models/user.model.js"
 import responseError from "../utils/responseError.js";
 
 export const createConversation = async (req, res, next) => {
@@ -18,13 +19,28 @@ export const createConversation = async (req, res, next) => {
   }
 };
 
+const getUser = async(userId) => {
+    try {
+      const user = await User.findById(userId);
+      return user;
+    } catch (error) {
+      console.log(error)
+    }
+}
+
 export const getConversations = async (req, res, next) => {
   try {
     const conversations = await Conversation.find(
       req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
     ).sort({ updatedAt: -1 });
-
-    res.status(200).send(conversations);
+    
+    const conv = await Promise.all(conversations?.map(async (conversation) => {
+      const seller = await getUser(conversation.sellerId);
+      const buyer = await getUser(conversation.buyerId)
+  
+        return (  {...conversation.toObject(), seller: seller.fullName , buyer: buyer.fullName})
+    })) ;
+    res.status(200).send(conv);
   } catch (error) {
     next(error);
   }
@@ -32,7 +48,7 @@ export const getConversations = async (req, res, next) => {
 
 export const getConversation = async (req, res, next) => {
   try {
-    const conversation = await Conversation.findOne({ id: req.params.id });
+    const conversation = await Conversation.findOne({ id: req.params.id }).sort({ updatedAt: -1});
 
     if (!conversation)
       return next(responseError(404, "Conversation not found!"));

@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Product.scss";
 import { Slider } from "infinite-react-carousel";
-import { useParams } from "react-router-dom";
+import { MdAdd, MdOutlineRemove } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+
+import { Link, useParams } from "react-router-dom";
 import { useGetById } from "_hooks";
-import { AffiliateQueryEnums } from "_constants";
+import { AffiliateQueryEnums, PAYMENT_ROUTE } from "_constants";
 import { productService } from "_services";
 import { userService } from "_services";
 import Reviews from "components/reviews/Reviews";
+import { addProduct } from "_redux/slices/cartSlice";
 
 const Product = () => {
   const { id } = useParams();
+  const [quantity, setQuantity] = useState(1);
   const { getProduct } = productService;
   const { getUser } = userService;
   const { isLoading, data } = useGetById(
@@ -18,11 +23,24 @@ const Product = () => {
     id
   );
 
+  const dispatch = useDispatch();
   const seller = useGetById(
     getUser,
     AffiliateQueryEnums.USERS,
     data?.data?.userId
   );
+
+  const handleQuantity = (type) => {
+    if (type === "dec") {
+      quantity > 1 && setQuantity(quantity - 1);
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
+
+  const handleClick = () => {
+    dispatch(addProduct({ ...data?.data, quantity }));
+  };
 
   return isLoading ? (
     "Loading"
@@ -166,7 +184,20 @@ const Product = () => {
               </div>
             ))}
           </div>
-          <button>Continue</button>
+          <div className="addContainer">
+            <div className="amountContainer">
+              <MdOutlineRemove
+                style={{ cursor: "pointer" }}
+                onClick={() => handleQuantity("dec")}
+              />
+              <span className="amount">{quantity}</span>
+              <MdAdd
+                style={{ cursor: "pointer" }}
+                onClick={() => handleQuantity("inc")}
+              />
+            </div>
+            <button onClick={handleClick}>ADD TO CART</button>
+          </div>
         </div>
       </div>
     </div>

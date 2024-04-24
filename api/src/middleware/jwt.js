@@ -14,3 +14,23 @@ export const verifyToken = (req, res, next) => {
     next();
   });
 };
+
+export const verifyTokenAndAuthorization = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.userId === req.params.id || req.isSeller) {
+      next();
+    } else {
+      res.status(403).json("You are not authorized to perfom this function!");
+    }
+  });
+};
+
+export const verifyTokenAndSeller = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.isSeller) {
+      next();
+    } else {
+      res.status(403).json("You are not authorized to perfom this function!");
+    }
+  });
+};

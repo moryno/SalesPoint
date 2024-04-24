@@ -1,18 +1,17 @@
-.orders {
+.myProducts {
     display: flex;
     justify-content: center;
     color: #555;
   
     .container {
       width: 1400px;
-      padding: 30px 0px;
+      padding: 50px 0px;
   
       .title {
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
-
-  
+ 
         button {
           background-color: #1dbf73;
           color: white;
@@ -32,23 +31,26 @@
             text-align: left;
           }
           td {
-            
+  
             sup{
               font-size: 12px;
             }
-  
+            
             .image {
               width: 50px;
               height: 25px;
               object-fit: cover;
             }
   
-            .message {
-              width: 25px;
+            .delete {
+              width: 20px;
               cursor: pointer;
             }
+  
           }
-         
+          &:nth-child(even) {
+            background-color: #1dbf730f;
+          }
         }
       }
     }

@@ -46,7 +46,7 @@ const Chats = () => {
             ...column,
             title: user?.isSeller ? "Buyer" : "Seller",
             render: (_, row) => (
-              <span>{user?.isSeller ? row?.buyerId : row?.sellerId}</span>
+              <span>{user?.isSeller ? row?.buyer : row?.seller}</span>
             ),
           };
         }

@@ -5,4 +5,5 @@ export const AffiliateQueryEnums = {
   CHATS: "chats",
   CONVERSATIONS: "conversations",
   USERS: "users",
+  CART: "cart",
 };

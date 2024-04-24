@@ -51,7 +51,7 @@ const Reviews = ({ productId }) => {
             onChange={onChange}
             placeholder="write your opinion"
           />
-          <select name="star" id="star" onChange={onChange}>
+          <select name="star" defaultValue={1} id="star" onChange={onChange}>
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>

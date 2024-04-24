@@ -12,9 +12,7 @@ const editProduct = (id, data) => {
 };
 const getProducts = (params, min, max, sort) => {
   return request.get(
-    `${PRODUCTS_API}${params}&min=${min ? min : 0}&max=${
-      max ? max : Infinity
-    }&sort=${sort}`
+    `${PRODUCTS_API}${params}${min ? `&min=${min}` : ""}${max ? `&max=${max}` : ""}${sort ? `&sort=${sort}` : ""}`
   );
 };
 const getProduct = (id) => {
