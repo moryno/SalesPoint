@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import "./Product.scss";
 import { Slider } from "infinite-react-carousel";
 import { MdAdd, MdOutlineRemove } from "react-icons/md";
@@ -6,11 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Link, useParams } from "react-router-dom";
 import { useGetById } from "_hooks";
-import { AffiliateQueryEnums, PAYMENT_ROUTE } from "_constants";
+import { AffiliateQueryEnums, PAYMENT_ROUTE, PRODUCT_ROUTE } from "_constants";
 import { productService } from "_services";
 import { userService } from "_services";
 import Reviews from "components/reviews/Reviews";
 import { addProduct } from "_redux/slices/cartSlice";
+import { AppBreadCrumbs } from "_lib";
 
 const Product = () => {
   const { id } = useParams();
@@ -41,6 +42,12 @@ const Product = () => {
   const handleClick = () => {
     dispatch(addProduct({ ...data?.data, quantity }));
   };
+  const urlToNameMap = useMemo(() => {
+    return {
+      [PRODUCT_ROUTE]: "Products",
+      [`${PRODUCT_ROUTE}/${id}`]: data?.data?.title,
+    };
+  }, [data?.data?.title, id]);
 
   return isLoading ? (
     "Loading"
@@ -48,9 +55,7 @@ const Product = () => {
     <div className="product">
       <div className="container">
         <div className="left">
-          <span className="breadcrumbs">
-            SALESPOINT {">"} GRAPHICS & DESIGN
-          </span>
+          <AppBreadCrumbs urlToNameMap={urlToNameMap} />
           <h1>{data?.data?.title}</h1>
           <div className="user">
             <img

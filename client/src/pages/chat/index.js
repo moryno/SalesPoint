@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import "./Chat.scss";
-import { Link, useParams } from "react-router-dom";
-import { AffiliateQueryEnums, CHATS_API } from "_constants";
+import { useParams } from "react-router-dom";
+import { AffiliateQueryEnums, CHAT_ROUTE } from "_constants";
 import { useAuthUser, useCreateService, useGetById } from "_hooks";
 import { chatService } from "_services";
+import { AppBreadCrumbs } from "_lib";
 
 const Chat = () => {
   const { id } = useParams();
@@ -27,15 +28,17 @@ const Chat = () => {
     e.target[0].value = "";
   };
 
+  const urlToNameMap = useMemo(() => {
+    return {
+      [CHAT_ROUTE]: "Chats",
+      [`${CHAT_ROUTE}/${id}`]: user.username,
+    };
+  }, [id, user?.username]);
+
   return (
     <div className="chat">
       <div className="container">
-        <span className="breadcrumbs">
-          <Link className="link" to={CHATS_API}>
-            Chats
-          </Link>{" "}
-          {">"} John Doe {">"}
-        </span>
+        <AppBreadCrumbs urlToNameMap={urlToNameMap} />
         {isLoading ? (
           "Loading"
         ) : (

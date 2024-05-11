@@ -7,9 +7,8 @@ import {
   alwaysStructure,
 } from "_core/AppRoutes";
 import { generateRoutes } from "_helpers/routeHelper";
-import AppAnimatePage from "_lib/AppAnimatePage";
-import AppSuspense from "_lib/AppSuspense";
 import { useAuthUser } from "_hooks";
+import { AppAnimatePage, AppSuspense } from "_lib";
 
 const AppLayout = () => {
   const { isAuthenticated, user } = useAuthUser();

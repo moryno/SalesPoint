@@ -1,0 +1,18 @@
+.breadcrumbContainer {
+   margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  .full-screen {
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    svg {
+      margin-right: 8px;
+    }
+  }
+  .breadcrumbsHomeIconCOntainer{
+    svg {
+        vertical-align: text-bottom;
+      }
+  }
+}
