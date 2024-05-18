@@ -1,0 +1,93 @@
+
+.appHeaderSearch{
+    display: flex;
+    align-items: center;
+    
+    .salespointSearch{
+        cursor: pointer;
+    }
+    
+}
+
+.appHeaderSearchModalContent{
+        top: 20px;
+        .ant-modal-content {
+          padding: 0px 0px 10px 0px;
+        }
+
+        .appHeaderSearchInput{
+          border-radius: 8px 8px 0px 0px;
+          padding: 20px;
+          box-shadow: none;
+          svg {
+            cursor: pointer;
+          }
+          &.ant-input-affix-wrapper {
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: 1px solid #E5E7EB
+          }
+        }
+
+        .appHeaderSearchFilters{
+            padding: 12px 20px 12px 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
+        .appHeaderSearchRecentHeader{
+            display: flex;
+            align-items: center;
+            padding: 0px 20px;
+            gap: 10px;
+            h5 {
+                margin: 0px !important;
+            }
+        }
+        .appHeaderSearchRecentItem{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 12px 20px 0px 20px;
+            .ant-typography  {
+              font-size: 16px;
+              transition: color 0.3s;
+              &:hover{
+                color: #12CC1B;
+              }
+                
+            }
+          
+            cursor: pointer;
+            svg {
+             cursor: pointer;
+            }
+        }
+        .appHeaderSearchSkeletonContainer{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 0px 20px;
+            .ant-skeleton-input {
+                height: 80px !important;
+                
+            }
+        }
+    }
+
+.appHeaderSearchError{
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  span {
+    &.ant-typography {
+      font-size: 16px !important;
+    }
+  }
+}

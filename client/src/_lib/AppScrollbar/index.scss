@@ -1,0 +1,22 @@
+.scrollbar{
+  position: relative;
+  height: 100%;
+  max-height: calc(100svh - 180px);
+  overflow-x: hidden;
+  padding: 0px 20px;
+
+  &.simplebar-offset,
+  &.simplebar-content-wrapper,
+  &.simplebar-content {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .simplebar-track.simplebar-vertical {
+    width: 8px;
+  }
+  .simplebar-track.simplebar-horizontal {
+    height: 8px;
+  }
+}

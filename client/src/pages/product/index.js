@@ -1,12 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import "./Product.scss";
 import { Slider } from "infinite-react-carousel";
 import { MdAdd, MdOutlineRemove } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Link, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { useGetById } from "_hooks";
-import { AffiliateQueryEnums, PAYMENT_ROUTE, PRODUCT_ROUTE } from "_constants";
+import { AffiliateQueryEnums, PRODUCT_ROUTE } from "_constants";
 import { productService } from "_services";
 import { userService } from "_services";
 import Reviews from "components/reviews/Reviews";
@@ -39,9 +38,10 @@ const Product = () => {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     dispatch(addProduct({ ...data?.data, quantity }));
-  };
+  }, [data?.data, dispatch, quantity]);
+
   const urlToNameMap = useMemo(() => {
     return {
       [PRODUCT_ROUTE]: "Products",

@@ -6,9 +6,14 @@ import "./Cart.scss";
 import { cartColumns } from "./columns";
 import { Link } from "react-router-dom";
 import { useAuthUser, useCreateService } from "_hooks";
-import { AffiliateQueryEnums, LOGIN_ROUTE, PAYMENT_ROUTE } from "_constants";
+import {
+  AffiliateQueryEnums,
+  LOGIN_ROUTE,
+  PAYMENT_ROUTE,
+  PRODUCT_ROUTE,
+} from "_constants";
 import { cartService } from "_services";
-import { deleteCart } from "_redux/slices/cartSlice";
+import { deleteCart, removeProduct } from "_redux/slices/cartSlice";
 
 const Cart = () => {
   const { products, total } = useSelector((state) => state.cart);
@@ -16,6 +21,15 @@ const Cart = () => {
   const { user, isAuthenticated } = useAuthUser();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const handleRemoveCart = useCallback(
+    (cart) => {
+      if (cart) {
+        dispatch(removeProduct(cart));
+      }
+    },
+    [dispatch]
+  );
 
   const columns = useMemo(
     () => [
@@ -34,7 +48,7 @@ const Cart = () => {
                 className="delete"
                 src="./img/delete.png"
                 alt="delete"
-                //   onClick={() => handleDelete(row?._id)}
+                onClick={() => handleRemoveCart(row)}
               />
             ),
           };
@@ -51,7 +65,7 @@ const Cart = () => {
         }
       }),
     ],
-    []
+    [handleRemoveCart]
   );
 
   const handleCheckout = useCallback(async () => {
@@ -112,7 +126,9 @@ const Cart = () => {
         ) : (
           <div className="redirectContainer">
             <div>Your cart is currently empty.</div>
-            <Link className="button link return">Return to shop</Link>
+            <Link to={PRODUCT_ROUTE} className="button link return">
+              Return to shop
+            </Link>
           </div>
         )}
       </div>

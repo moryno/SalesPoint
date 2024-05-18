@@ -1,5 +1,6 @@
 import React from "react";
 import "./Featured.scss";
+import { AppSearch } from "_lib";
 
 const Featured = () => {
   return (
@@ -11,7 +12,8 @@ const Featured = () => {
           </h1>
           <div className="search">
             <div className="searchInput">
-              <img src="./img/search.png" alt="search" />
+              {/* <img src="./img/search.png" alt="search" /> */}
+              <AppSearch />
               <input type="text" placeholder='Try "selling your goods"' />
             </div>
             <button>Search</button>
